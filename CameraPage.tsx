@@ -15,11 +15,19 @@ export default function CameraPage() {
     .map(([_, p]) => (p.state === "error" ? p.error : null))
     .filter((e) => e !== null)
     .map((e) => `${e.name}: ${e.message}\n${e.cause}\n${e.stack}`);
+  const loading = Object.entries(modelPlugins)
+    .map(([key, p]) => (p.state === "loading" ? key : null))
+    .filter((k) => k !== null);
+  const loaded = Object.entries(modelPlugins)
+    .map(([key, p]) => (p.state === "loaded" ? key : null))
+    .filter((k) => k !== null);
 
-  // Bail out on any model having errors.
-  if (errors.length > 0) {
+  // Bail out if any errors or still loading:
+  if (errors.length + loading.length > 0) {
     return (
       <View>
+        <Text>Loading: {loading.join(", ")}</Text>
+        <Text>Loaded: {loaded.join(", ")}</Text>
         <Text>Errors:</Text>
         {errors.map((e) => (
           <Text>{e}</Text>
