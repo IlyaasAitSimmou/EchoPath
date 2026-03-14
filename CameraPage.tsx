@@ -1,22 +1,19 @@
 import { StyleSheet, Text, View } from "react-native";
-import { useModels } from "./components/ModelContext";
+import CamVisualizer from "./components/CamVisualizer";
+import ModelProvider from "./components/ModelProvider";
+import Toast from "react-native-toast-message";
 
 export default function CameraPage() {
-  const { models } = useModels();
-  const yoloState = models.yolo.state;
-
-  const modelStatusText =
-    yoloState === "loaded"
-      ? "YOLO model is ready."
-      : yoloState === "loading"
-        ? "Loading YOLO model..."
-        : "Model failed to load. Check the error toast.";
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Camera Page</Text>
-      <Text style={styles.subtitle}>{modelStatusText}</Text>
-    </View>
+    <>
+      <ModelProvider>
+        <View style={styles.container}>
+          <Text style={styles.title}>Camera Page</Text>
+          <CamVisualizer />
+        </View>
+      </ModelProvider>
+      <Toast />
+    </>
   );
 }
 
