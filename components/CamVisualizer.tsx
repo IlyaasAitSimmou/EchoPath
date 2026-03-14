@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import Toast from "react-native-toast-message";
 import {
   useCameraDevice,
@@ -34,12 +34,17 @@ export default function CamVisualizer() {
         <Text style={styles.message}>
           Grant camera permission to preview the feed.
         </Text>
-        <Button
-          title="Allow camera access"
-          onPress={() => {
-            void handleRequestPermission();
-          }}
-        />
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Allow camera access"
+          onPress={handleRequestPermission}
+          style={({ pressed }) => [
+            styles.linkButton,
+            pressed && styles.buttonPressed,
+          ]}
+        >
+          <Text style={styles.linkButtonText}>Allow camera access</Text>
+        </Pressable>
       </View>
     );
   }
@@ -55,11 +60,15 @@ export default function CamVisualizer() {
     );
   }
 
-  return <Camera device={device} isActive={true} />;
+  return <Camera style={styles.camera} device={device} isActive={true} />;
 }
 
 const styles = StyleSheet.create({
+  camera: {
+    flex: 1,
+  },
   stateContainer: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 24,
@@ -76,5 +85,21 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     color: "#475467",
     textAlign: "center",
+  },
+  buttonPressed: {
+    opacity: 0.8,
+  },
+  linkButton: {
+    marginTop: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#98A2B3",
+  },
+  linkButtonText: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#344054",
   },
 });
