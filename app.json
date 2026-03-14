@@ -45,6 +45,13 @@
             "com.google.android.googlequicksearchbox"
           ]
         }
+      ],
+      [
+        "react-native-fast-tflite",
+        {
+          "enableCoreMLDelegate": true,
+          "enableAndroidGpuLibraries": true
+        }
       ]
     ],
     "extra": {
