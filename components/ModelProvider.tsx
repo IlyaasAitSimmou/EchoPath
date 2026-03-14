@@ -15,6 +15,45 @@ const MODEL_SOURCES = {
   yolo: require("../assets/models/yolo26l_float32.tflite"),
 } as const;
 
+export const modelToastConfig: ToastConfig = {
+  modelLoading: ({ text1, text2 }) => (
+    <BaseToast
+      text1={text1}
+      text2={text2}
+      text1NumberOfLines={1}
+      text2NumberOfLines={2}
+      style={styles.loadingToast}
+      contentContainerStyle={styles.toastContentContainer}
+      text1Style={styles.toastTitle}
+      text2Style={styles.toastMessage}
+    />
+  ),
+  modelError: ({ text1, text2 }) => (
+    <ErrorToast
+      text1={text1}
+      text2={text2}
+      text1NumberOfLines={1}
+      text2NumberOfLines={6}
+      style={styles.errorToast}
+      contentContainerStyle={styles.toastContentContainer}
+      text1Style={styles.toastTitle}
+      text2Style={styles.toastMessage}
+    />
+  ),
+  modelReady: ({ text1, text2 }) => (
+    <BaseToast
+      text1={text1}
+      text2={text2}
+      text1NumberOfLines={1}
+      text2NumberOfLines={1}
+      style={styles.successToast}
+      contentContainerStyle={styles.toastContentContainer}
+      text1Style={styles.toastTitle}
+      text2Style={styles.toastMessage}
+    />
+  ),
+};
+
 export default function ModelProvider({ children }: PropsWithChildren) {
   const hasShownReadyToastRef = useRef(false);
 
@@ -61,54 +100,12 @@ export default function ModelProvider({ children }: PropsWithChildren) {
     .join("|");
   const loadingLabel = contextValue.loading.join(", ");
 
-  const toastConfig = useMemo<ToastConfig>(
-    () => ({
-      modelLoading: ({ text1, text2 }) => (
-        <BaseToast
-          text1={text1}
-          text2={text2}
-          text1NumberOfLines={1}
-          text2NumberOfLines={2}
-          style={styles.loadingToast}
-          contentContainerStyle={styles.toastContentContainer}
-          text1Style={styles.toastTitle}
-          text2Style={styles.toastMessage}
-        />
-      ),
-      modelError: ({ text1, text2 }) => (
-        <ErrorToast
-          text1={text1}
-          text2={text2}
-          text1NumberOfLines={1}
-          text2NumberOfLines={6}
-          style={styles.errorToast}
-          contentContainerStyle={styles.toastContentContainer}
-          text1Style={styles.toastTitle}
-          text2Style={styles.toastMessage}
-        />
-      ),
-      modelReady: ({ text1, text2 }) => (
-        <BaseToast
-          text1={text1}
-          text2={text2}
-          text1NumberOfLines={1}
-          text2NumberOfLines={1}
-          style={styles.successToast}
-          contentContainerStyle={styles.toastContentContainer}
-          text1Style={styles.toastTitle}
-          text2Style={styles.toastMessage}
-        />
-      ),
-    }),
-    [],
-  );
-
   useEffect(() => {
     if (contextValue.hasErrors) {
       hasShownReadyToastRef.current = false;
 
       Toast.show({
-        type: "error",
+        type: "modelError",
         position: "top",
         autoHide: false,
         swipeable: true,
@@ -125,7 +122,7 @@ export default function ModelProvider({ children }: PropsWithChildren) {
       hasShownReadyToastRef.current = false;
 
       Toast.show({
-        type: "info",
+        type: "modelLoading",
         position: "top",
         autoHide: false,
         swipeable: false,
@@ -140,7 +137,7 @@ export default function ModelProvider({ children }: PropsWithChildren) {
       hasShownReadyToastRef.current = true;
 
       Toast.show({
-        type: "success",
+        type: "modelReady",
         position: "top",
         autoHide: true,
         visibilityTime: 1800,
@@ -169,10 +166,7 @@ export default function ModelProvider({ children }: PropsWithChildren) {
 
   return (
     <ModelContext.Provider value={contextValue}>
-      <View style={styles.root}>
-        {children}
-        <Toast config={toastConfig} />
-      </View>
+      <View style={styles.root}>{children}</View>
     </ModelContext.Provider>
   );
 }

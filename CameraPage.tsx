@@ -1,21 +1,17 @@
 import { StyleSheet, Text, View } from "react-native";
 import CamVisualizer from "./components/CamVisualizer";
 import ModelProvider from "./components/ModelProvider";
-import Toast from "react-native-toast-message";
 
 export default function CameraPage() {
   return (
-    <>
-      <ModelProvider>
-        <View style={styles.container}>
-          <Text style={styles.title}>Camera Page</Text>
-          <View style={styles.cameraContainer}>
-            <CamVisualizer />
-          </View>
+    <ModelProvider>
+      <View style={styles.container}>
+        <Text style={styles.title}>Camera Page</Text>
+        <View style={styles.cameraContainer}>
+          <CamVisualizer />
         </View>
-      </ModelProvider>
-      <Toast />
-    </>
+      </View>
+    </ModelProvider>
   );
 }
 
