@@ -1,10 +1,15 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import Toast from "react-native-toast-message";
 import {
   useCameraDevice,
   useCameraPermission,
+  useSkiaFrameProcessor,
+  useFrameProcessor,
   Camera,
 } from "react-native-vision-camera";
+import { matchFont } from "@shopify/react-native-skia";
+import { useYolo } from "./useYolo";
+import { useBboxVisualizer } from "./useBboxVisualizer";
 
 export default function CamVisualizer() {
   const device = useCameraDevice("back");
@@ -26,6 +31,33 @@ export default function CamVisualizer() {
       });
     }
   };
+
+  const fontStyle = {
+    fontFamily: Platform.select({
+      ios: "Helvetica",
+      android: "sans-serif", // Standard Android system font
+      default: "sans-serif",
+    }),
+    fontSize: 18,
+    fontWeight: "bold", // Skia accepts "normal", "bold", or numeric weights like "700"
+  } as const;
+
+  // 2. Synchronously grab the font from the device
+  const font = matchFont(fontStyle);
+  const detectObjects = useYolo();
+  //const drawDetections = useBboxVisualizer(font);
+
+  // const frameProcessor = useSkiaFrameProcessor(
+  const frameProcessor = useFrameProcessor(
+    (frame) => {
+      "worklet";
+      // frame.render();
+      const detections = detectObjects(frame);
+      // drawDetections(frame, detections);
+    },
+    //[detectObjects, drawDetections],
+    [detectObjects],
+  );
 
   if (!hasPermission) {
     return (
@@ -60,7 +92,14 @@ export default function CamVisualizer() {
     );
   }
 
-  return <Camera style={styles.camera} device={device} isActive={true} />;
+  return (
+    <Camera
+      style={styles.camera}
+      device={device}
+      isActive={true}
+      frameProcessor={frameProcessor}
+    />
+  );
 }
 
 const styles = StyleSheet.create({

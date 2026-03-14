@@ -10,10 +10,7 @@ import ModelContext, {
   type ModelContextValue,
   type ModelKey,
 } from "./ModelContext";
-
-const MODEL_SOURCES = {
-  yolo: require("../assets/models/yolo26l_float32.tflite"),
-} as const;
+import { MODEL_SOURCES } from "./const";
 
 export const modelToastConfig: ToastConfig = {
   modelLoading: ({ text1, text2 }) => (

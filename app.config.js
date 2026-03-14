@@ -42,6 +42,15 @@ module.exports = {
       favicon: "./assets/favicon.png",
     },
     plugins: [
+      ["expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 26,
+            "compileSdkVersion": 36,
+            "targetSdkVersion": 36,
+          },
+        }
+      ],
       [
         "expo-speech-recognition",
         {

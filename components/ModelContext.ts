@@ -20,11 +20,8 @@ export type ModelContextValue = {
 
 const ModelContext = createContext<ModelContextValue | null>(null);
 
-export function useModels() {
+export function useModels(): ModelContextValue | null {
   const context = useContext(ModelContext);
-  if (context === null) {
-    throw new Error("useModels must be used inside ModelProvider.");
-  }
   return context;
 }
 
