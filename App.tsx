@@ -6,6 +6,7 @@ import {
 } from "expo-speech-recognition";
 import { useMemo, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import CameraPage from "./CameraPage";
 
 type AppCommand = "start navigation" | "stop navigation" | "repeat" | "help";
 
@@ -17,6 +18,7 @@ const COMMANDS: AppCommand[] = [
 ];
 
 export default function App() {
+  const [activePage, setActivePage] = useState<"home" | "camera">("home");
   const [isListening, setIsListening] = useState(false);
   const [lastTranscript, setLastTranscript] = useState("-");
   const [navigationEnabled, setNavigationEnabled] = useState(false);
@@ -139,6 +141,22 @@ export default function App() {
     speak("Command not recognized. Say help.");
   });
 
+  if (activePage === "camera") {
+    return (
+      <View style={styles.container}>
+        <CameraPage />
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Go back to home page"
+          onPress={() => setActivePage("home")}
+          style={({ pressed }) => [styles.linkButton, pressed && styles.buttonPressed]}
+        >
+          <Text style={styles.linkButtonText}>Back</Text>
+        </Pressable>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Voice Navigation Control</Text>
@@ -166,6 +184,14 @@ export default function App() {
       <Text style={styles.hint}>
         Commands: start navigation, stop navigation, repeat, help
       </Text>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Go to camera page"
+        onPress={() => setActivePage("camera")}
+        style={({ pressed }) => [styles.linkButton, pressed && styles.buttonPressed]}
+      >
+        <Text style={styles.linkButtonText}>Go to Camera Page</Text>
+      </Pressable>
       <StatusBar style="auto" />
     </View>
   );
@@ -228,5 +254,18 @@ const styles = StyleSheet.create({
     fontSize: 13,
     textAlign: "center",
     color: "#475467",
+  },
+  linkButton: {
+    marginTop: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#98A2B3",
+  },
+  linkButtonText: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#344054",
   },
 });
