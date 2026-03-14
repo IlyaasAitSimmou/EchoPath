@@ -1,21 +1,48 @@
-import { StyleSheet, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import { InteractionManager, StyleSheet, Text, View } from "react-native";
 import CamVisualizer from "./components/CamVisualizer";
 import ModelProvider from "./components/ModelProvider";
 
 export default function CameraPage() {
+  const [shouldWarmupModel, setShouldWarmupModel] = useState(false);
+
+  useEffect(() => {
+    const task = requestIdleCallback(() => {
+      setShouldWarmupModel(true);
+    });
+
+    return () => {
+      cancelIdleCallback(task);
+    };
+  }, []);
+
   return (
-    <ModelProvider>
+    <>
       <View style={styles.container}>
         <Text style={styles.title}>Camera Page</Text>
         <View style={styles.cameraContainer}>
           <CamVisualizer />
         </View>
       </View>
-    </ModelProvider>
+
+      {shouldWarmupModel ? (
+        <View pointerEvents="none" style={styles.modelWarmupHost}>
+          <ModelProvider>
+            <View />
+          </ModelProvider>
+        </View>
+      ) : null}
+    </>
   );
 }
 
 const styles = StyleSheet.create({
+  modelWarmupHost: {
+    position: "absolute",
+    width: 0,
+    height: 0,
+    opacity: 0,
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
