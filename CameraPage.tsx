@@ -9,7 +9,9 @@ export default function CameraPage() {
       <ModelProvider>
         <View style={styles.container}>
           <Text style={styles.title}>Camera Page</Text>
-          <CamVisualizer />
+          <View style={styles.cameraContainer}>
+            <CamVisualizer />
+          </View>
         </View>
       </ModelProvider>
       <Toast />
@@ -21,12 +23,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    paddingTop: 56,
+    paddingHorizontal: 16,
+    paddingBottom: 24,
   },
   title: {
     fontSize: 28,
     fontWeight: "700",
+    marginBottom: 16,
+    textAlign: "center",
+  },
+  cameraContainer: {
+    flex: 1,
+    width: "100%",
+    overflow: "hidden",
+    borderRadius: 16,
+    backgroundColor: "#101828",
   },
   subtitle: {
     marginTop: 8,

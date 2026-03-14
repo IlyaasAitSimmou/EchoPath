@@ -23,7 +23,7 @@ export default function App() {
   const [lastTranscript, setLastTranscript] = useState("-");
   const [navigationEnabled, setNavigationEnabled] = useState(false);
   const [lastGuidance, setLastGuidance] = useState(
-    "Say 'help' to hear available commands."
+    "Say 'help' to hear available commands.",
   );
 
   const spokenState = useMemo(() => {
@@ -66,15 +66,16 @@ export default function App() {
     }
 
     setLastGuidance(
-      "Available commands: start navigation, stop navigation, repeat, help."
+      "Available commands: start navigation, stop navigation, repeat, help.",
     );
     speak(
-      "Available commands: start navigation, stop navigation, repeat, help."
+      "Available commands: start navigation, stop navigation, repeat, help.",
     );
   };
 
   const requestPermissionsAndStart = async () => {
-    const permission = await ExpoSpeechRecognitionModule.requestPermissionsAsync();
+    const permission =
+      await ExpoSpeechRecognitionModule.requestPermissionsAsync();
     if (!permission.granted) {
       setLastGuidance("Microphone permission is required.");
       speak("Microphone permission is required.");
@@ -143,13 +144,18 @@ export default function App() {
 
   if (activePage === "camera") {
     return (
-      <View style={styles.container}>
-        <CameraPage />
+      <View style={styles.cameraScreen}>
+        <View style={styles.cameraPageWrapper}>
+          <CameraPage />
+        </View>
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Go back to home page"
           onPress={() => setActivePage("home")}
-          style={({ pressed }) => [styles.linkButton, pressed && styles.buttonPressed]}
+          style={({ pressed }) => [
+            styles.linkButton,
+            pressed && styles.buttonPressed,
+          ]}
         >
           <Text style={styles.linkButtonText}>Back</Text>
         </Pressable>
@@ -188,7 +194,10 @@ export default function App() {
         accessibilityRole="button"
         accessibilityLabel="Go to camera page"
         onPress={() => setActivePage("camera")}
-        style={({ pressed }) => [styles.linkButton, pressed && styles.buttonPressed]}
+        style={({ pressed }) => [
+          styles.linkButton,
+          pressed && styles.buttonPressed,
+        ]}
       >
         <Text style={styles.linkButtonText}>Go to Camera Page</Text>
       </Pressable>
@@ -210,6 +219,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "700",
     marginBottom: 12,
+  },
+  cameraScreen: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  cameraPageWrapper: {
+    flex: 1,
+    width: "100%",
   },
   state: {
     fontSize: 18,
@@ -257,6 +274,8 @@ const styles = StyleSheet.create({
   },
   linkButton: {
     marginTop: 10,
+    alignSelf: "center",
+    marginBottom: 24,
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 10,
