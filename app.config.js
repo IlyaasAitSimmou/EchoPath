@@ -18,6 +18,8 @@ module.exports = {
           "Allow $(PRODUCT_NAME) to use speech recognition for voice control.",
         NSMicrophoneUsageDescription:
           "Allow $(PRODUCT_NAME) to use the microphone for voice control.",
+        NSLocationWhenInUseUsageDescription:
+          "Allow $(PRODUCT_NAME) to access your location for walking directions."
       },
       bundleIdentifier: "com.ilyaseen.vision-nav-app",
     },
@@ -29,7 +31,11 @@ module.exports = {
         monochromeImage: "./assets/android-icon-monochrome.png",
       },
       predictiveBackGestureEnabled: false,
-      permissions: ["android.permission.RECORD_AUDIO"],
+      permissions: [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ],
       package: "com.ilyaseen.visionnavapp",
     },
     web: {
