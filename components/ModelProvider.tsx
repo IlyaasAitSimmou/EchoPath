@@ -12,7 +12,7 @@ import ModelContext, {
 } from "./ModelContext";
 
 const MODEL_SOURCES = {
-  yolo: require("./assets/models/yolo26l_float32.tflite"),
+  yolo: require("../assets/models/yolo26l_float32.tflite"),
 } as const;
 
 export default function ModelProvider({ children }: PropsWithChildren) {
@@ -108,7 +108,7 @@ export default function ModelProvider({ children }: PropsWithChildren) {
       hasShownReadyToastRef.current = false;
 
       Toast.show({
-        type: "modelError",
+        type: "error",
         position: "top",
         autoHide: false,
         swipeable: true,
@@ -125,7 +125,7 @@ export default function ModelProvider({ children }: PropsWithChildren) {
       hasShownReadyToastRef.current = false;
 
       Toast.show({
-        type: "modelLoading",
+        type: "info",
         position: "top",
         autoHide: false,
         swipeable: false,
@@ -140,7 +140,7 @@ export default function ModelProvider({ children }: PropsWithChildren) {
       hasShownReadyToastRef.current = true;
 
       Toast.show({
-        type: "modelReady",
+        type: "success",
         position: "top",
         autoHide: true,
         visibilityTime: 1800,

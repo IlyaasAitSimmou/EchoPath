@@ -15,7 +15,7 @@ export default function CamVisualizer() {
 
     if (!didGrantPermission) {
       Toast.show({
-        type: "modelError",
+        type: "error",
         position: "top",
         autoHide: false,
         swipeable: true,
